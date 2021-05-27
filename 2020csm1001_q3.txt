@@ -1,0 +1,143 @@
+
+# NAME - AADITYA RAJ BARNWAL
+# ROLL - 2020 CSM 1001
+
+#start: .word 0x10000100
+.data
+input: .asciiz "E 1 D E 1 E 22 D"
+store: .word 0x10000100   #start address of queue
+string:.word 0x10000000 #base address of string 
+storeat:.word 0x10000200
+.text
+# i am using all the temporary register and also using x10-x16 register and as kalyan told us that it is not neccessary to preserve x10-x16 data in stack
+add x15,x0,x0  #Initialize size of queue
+addi t1,x0,68 #t1=D
+addi t0,x0,32 #t0 = space
+addi t2,x0,83 #t2=S
+addi t3,x0,69#t3=E
+lw x14,storeat #to store e success,d success
+addi t4,x0,10 #general value calc
+lw t5,string #base of string 
+lw x16,store#front
+lw x11,store#rear
+addi x12,x0,20
+read:
+lb t6,0(t5)
+beq t6,x0,finalexit
+beq t3,t6,enque
+beq t6,t1,deque
+beq t6,t2,size
+beq x0,x0,finalexit
+
+enque:
+addi t5,t5,2
+blt x12,x15,exitoverflow  #overflow
+addi t6,x0,0#initilalize sum=0
+addi x15,x15,1 #size is incresed
+
+addi x13,x0,69 #E
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,32 # space
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,83 #S
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,117 #u
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,99 #c
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,99 #c
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,101 #e
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,115 #s
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,115 #s
+sb x13,0(x14)
+addi x14,x14,1
+sb x0,0(x14)
+addi x14,x14,1
+
+
+loope:lb x13,0(t5)
+beq x13,t0,space_remover
+beq x13,x0,allexite
+addi x13,x13,-48
+mul t6,t6,t4
+add t6,t6,x13
+addi t5,t5,1
+jal x0,loope
+deque:
+beq x15,x0,exitunderflow
+
+addi x13,x0,68 #D
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,32 # space
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,83 #S
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,117 #u
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,99 #c
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,99 #c
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,101 #e
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,115 #s
+sb x13,0(x14)
+addi x14,x14,1
+addi x13,x0,115 #s
+sb x13,0(x14)
+addi x14,x14,1
+sb x0,0(x14)
+addi x14,x14,1
+
+
+addi x15,x15,-1
+sw x0,0(x10)
+addi x16,x16,4
+addi t5,t5,2
+jal x0,read
+size:
+addi t5,t5,2
+jal x0,read
+
+
+space_remover:
+sw t6,0(x11)
+addi x11,x11,4
+addi t5,t5,1
+jal x0,read
+
+exitunderflow:
+
+addi x10,x0,-1
+jal x0,finalexit
+
+exitoverflow:
+addi x10,x0,-2
+jal x0,finalexit
+
+
+allexite:
+sw t6,0(x11)
+addi x11,x11,4
+addi t5,t5,1
+finalexit:
+
+

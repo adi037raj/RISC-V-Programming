@@ -1,0 +1,38 @@
+
+# NAME - AADITYA RAJ BARNWAL
+# ROLL - 2020 CSM 1001
+
+.data 
+str:.asciiz "i,aaditya raj barnwal,will not call instructor of cs527 sir!"  
+start:.word 0x10000000
+var1: .word 0x10001000
+var2: .word 0x10002000
+.text
+lw t1,var1 #first to store at 0x10001000
+lw t3,start #base add of string
+loop:
+lb  t4,0(t3)
+sb t4,0(t1)
+beq t4,x0,exit
+addi t1,t1,1
+addi t3,t3,1
+jal x0,loop
+exit:
+#ascii of comma is 44 and  33 is ! , 5 is 53 , 2 is 50 , 7 is 55
+lw t0,var1
+lw t1,var2
+addi t3,x0,60 # as 60 is greater than all special values(ascii val) just assumption
+loop1:
+lb t2,0(t0)
+beq t2,x0,allexit
+blt t2,t3,special
+addi t2,t2,-32 #means its a character a-z
+loop2:
+sb t2,0(t1)
+addi t0,t0,1
+addi t1,t1,1
+jal x0,loop1
+special:
+jal x0,loop2
+allexit:
+

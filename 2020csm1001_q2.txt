@@ -1,0 +1,12 @@
+
+# NAME - AADITYA RAJ BARNWAL
+# ROLL - 2020 CSM 1001
+
+.data 
+var:.word 0x1
+var1:.word 0x10000000 #address of var
+.text
+lw t1,var1
+lb t0,0(t1)
+slti x10,t0,1    # lower byte addresses are used for the less significant bytes of the word = Little Endian    else big endian
+
